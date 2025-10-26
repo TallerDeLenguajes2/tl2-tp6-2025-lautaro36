@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Fs5iESDOPQE=",
+  "dgSpecHash": "I4oOA2Nzrkk=",
   "success": true,
-  "projectFilePath": "C:\\Users\\ASUS\\Desktop\\Facultad\\Taller-de-lenguajes-2\\tp7\\tp7.csproj",
+  "projectFilePath": "C:\\Users\\ASUS\\Desktop\\Facultad\\Taller-de-lenguajes-2\\tp6\\tl2-tp6-2025-lautaro36\\tp7\\tp7.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.5\\microsoft.aspnetcore.openapi.9.0.5.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.data.sqlite\\9.0.10\\microsoft.data.sqlite.9.0.10.nupkg.sha512",

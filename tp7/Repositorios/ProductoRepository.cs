@@ -63,27 +63,37 @@ public class ProductoRepository
         var producto = new Producto();
 
         using var connection = GetOpenConnection();
-        var queryString = $"SELECT IdProducto, Descripcion, Precio FROM Productos WHERE IdProducto = @Id";
+        var queryString = $"SELECT IdProducto, Descripcion, Precio FROM Productos WHERE IdProducto = @id";
         var command = new SqliteCommand(queryString, connection);
+
+        command.Parameters.Add(new SqliteParameter("@id", id));
 
         using (SqliteDataReader reader = command.ExecuteReader())
         {
-            producto.IdProducto = Convert.ToInt32(reader["IdProducto"]);
-            producto.Descripcion = reader["Descripcion"].ToString();
-            producto.Precio = Convert.ToInt32(reader["Precio"]);
+            while (reader.Read())
+            {
+                producto.IdProducto = Convert.ToInt32(reader["IdProducto"]);
+                producto.Descripcion = reader["Descripcion"].ToString();
+                producto.Precio = Convert.ToInt32(reader["Precio"]);
+            }
         }
 
         connection.Close();
         return producto;
     }
-    
+
     public void DeleteByID(int id)
     {
-        using(var connection = GetOpenConnection())
+        using (var connection = GetOpenConnection())
         {
-            string queryString = $"DELETE IdProducto, Descripcion, Precio FROM Productos WHERE";
-        }
+            string queryString = $"DELETE IdProducto, Descripcion, Precio FROM Productos WHERE IdProducto = @id";
+            var command = new SqliteCommand(queryString, connection);
 
+            command.Parameters.Add(new SqliteParameter("@id", id));
+
+            command.ExecuteNonQuery();
+            connection.Close();
+        }
     }
 
 }
