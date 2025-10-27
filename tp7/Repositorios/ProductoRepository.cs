@@ -22,16 +22,22 @@ public class ProductoRepository
             connection.Close();
         }
     }
-    // public void ModificarProducto(int IdProducto, Producto producto)
-    // {
-    //     using (var connection = GetOpenConnection())
-    //     {
-    //         string queryString = $"UPDATE Producto SET Descripcion = @descripcion, Precio = @precio";
-    //         var command = new SqliteCommand(queryString, connection);
+    public bool ModificarProducto(int id, Producto producto)
+    {
+        using (var connection = GetOpenConnection())
+        {
+            string queryString = $"UPDATE Productos SET Descripcion = @descripcion, Precio = @precio WHERE IdProducto = @id";
+            var command = new SqliteCommand(queryString, connection);
 
-    //         command.Parameters.Add(new SqliteParameter("@descripcion", ))
-    //     }
-    // }
+            command.Parameters.Add(new SqliteParameter("@descripcion", producto.Descripcion));
+            command.Parameters.Add(new SqliteParameter("@precio", producto.Precio));
+            command.Parameters.Add(new SqliteParameter("@id", id));
+
+            var filasAfectadas = command.ExecuteNonQuery();
+            connection.Close();
+            return filasAfectadas >= 1;
+        }
+    }
     public List<Producto> GetAll() //● Listar todos los Productos registrados. (devuelve un List de Producto)
     {
         using var connection = GetOpenConnection();

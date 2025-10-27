@@ -24,6 +24,14 @@ public class ProductoController : ControllerBase
         return Ok(productos);   
     }
 
+    [HttpPut("{id}")]
+    public IActionResult ModificarProducto([FromBody]Producto producto, int id)
+    {
+        var updateCorrecto = _productoRepository.ModificarProducto(id, producto);
+        if (!updateCorrecto) return NotFound($"No se encontró un producto con el ID {id}.");
+        return Ok();
+    }
+
     [HttpGet("{id}")] // antes lo tenia como [HttpGet("id")] pero devolvia este url https://localhost:7235/Producto/id?id=4
     public IActionResult GetDetallesById(int id)
     {
