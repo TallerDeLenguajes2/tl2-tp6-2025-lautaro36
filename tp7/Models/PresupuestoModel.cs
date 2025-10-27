@@ -1,4 +1,4 @@
-public class Presupuesto
+    public class Presupuesto
 {
     private int idPresupuesto;
     private string nombreDestinatario;

@@ -10,14 +10,14 @@ public class ProductoController : ControllerBase
         _productoRepository = new ProductoRepository();
     }
 
-    [HttpPost("")]// preguntar que va aca
+    [HttpPost("AltaProducto")]
     public IActionResult crearProducto([FromBody] Producto producto)
     {
         _productoRepository.crearProducto(producto);
-        return Created("producto", producto);
+        return Created("producto dado de alta correctamente", producto);
     }
 
-    [HttpGet("")] //aca tambien
+    [HttpGet("Productos")]
     public IActionResult GetAll()
     {
         var productos = _productoRepository.GetAll();
@@ -40,13 +40,13 @@ public class ProductoController : ControllerBase
         return Ok(producto);
     }
 
-    [HttpDelete("{id}")] // antes lo tenia como [HttpDelete("id")] pero segun gemini, que me ayudo con la excepcion SQLite Error 19, esta version es mas RESTful. preguntar
+    [HttpDelete("{id}")]
     public IActionResult BorrarProducto(int id)
     {
         var borradoCorrecto = _productoRepository.DeleteByID(id);
         if (borradoCorrecto == -1) return Conflict("El producto ya fue agregado a uno o mas presupuestos, asegurese de borrar primero el/los presupuestos.");//Bad Request implica que la solicitud HTTP en sí es incorrecta, conflict indica que la solicitud es válida, pero no puede hay un conflicto con el estado actual del recurso. es mas especifica
         else if (borradoCorrecto == 0) return NotFound($"No se encontró un producto con el ID {id}.");
-        return NoContent();//nocontetn es la respuesta estándar para operaciones DELETE exitosas
+        return NoContent();//noContent es la respuesta estándar para operaciones DELETE exitosas
     } 
     //no funciona si intento borrar un producto que se encuentra sienndo referenciado en otra tabla. 
     // FOREIGN KEY(IdProducto) REFERENCES Producto(IdProducto) ON DELETE CASCADE
