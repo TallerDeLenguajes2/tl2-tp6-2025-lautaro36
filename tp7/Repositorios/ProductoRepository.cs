@@ -70,29 +70,42 @@ public class ProductoRepository
 
         using (SqliteDataReader reader = command.ExecuteReader())
         {
-            while (reader.Read())
+            if (reader.Read())
             {
-                producto.IdProducto = Convert.ToInt32(reader["IdProducto"]);
-                producto.Descripcion = reader["Descripcion"].ToString();
-                producto.Precio = Convert.ToInt32(reader["Precio"]);
+                while (reader.Read())
+                {
+                    producto.IdProducto = Convert.ToInt32(reader["IdProducto"]);
+                    producto.Descripcion = reader["Descripcion"].ToString();
+                    producto.Precio = Convert.ToInt32(reader["Precio"]);
+                }
             }
+            else producto = null;
         }
 
         connection.Close();
         return producto;
     }
 
-    public void DeleteByID(int id)
+    public int DeleteByID(int id)
     {
         using (var connection = GetOpenConnection())
         {
-            string queryString = $"DELETE IdProducto, Descripcion, Precio FROM Productos WHERE IdProducto = @id";
+            string queryString = $"DELETE FROM Productos WHERE IdProducto = @id"; //DELETE IdProducto, Descripcion, Precio FROM mal, directamente DELETE FROM
             var command = new SqliteCommand(queryString, connection);
 
             command.Parameters.Add(new SqliteParameter("@id", id));
+            int filasBorradas;
+            try
+            {
+                filasBorradas = command.ExecuteNonQuery();
+            }
+            catch (SqliteException ex) when (ex.SqliteErrorCode == 19) // SQLite Error 19: 'FOREIGN KEY constraint failed' esta es la excepcion que arroja cuando el producto que se intenta borrar esta siendo referenciado por otra tabla
+            {
+                filasBorradas = -1;
+            }
 
-            command.ExecuteNonQuery();
             connection.Close();
+            return filasBorradas;
         }
     }
 
