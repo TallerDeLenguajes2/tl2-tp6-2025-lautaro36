@@ -72,12 +72,10 @@ public class ProductoRepository
         {
             if (reader.Read())
             {
-                while (reader.Read())
-                {
-                    producto.IdProducto = Convert.ToInt32(reader["IdProducto"]);
-                    producto.Descripcion = reader["Descripcion"].ToString();
-                    producto.Precio = Convert.ToInt32(reader["Precio"]);
-                }
+                producto.IdProducto = Convert.ToInt32(reader["IdProducto"]);
+                producto.Descripcion = reader["Descripcion"].ToString();
+                producto.Precio = Convert.ToInt32(reader["Precio"]);
+
             }
             else producto = null;
         }
