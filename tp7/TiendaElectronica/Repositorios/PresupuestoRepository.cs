@@ -104,4 +104,28 @@ public class PresupuestoRepository
         return listadoPresupuestos;
     }
 
+    public int DeleteById(int id)
+    {
+        using(var connection = GetConnection())
+        {
+            string stringQuery = "DELETE FROM Presupuestos WHERE IdPresupuesto = @id";
+            var command = new SqliteCommand(stringQuery, connection);
+
+            command.Parameters.Add(new SqliteParameter("@id", id));
+
+            int lineasAfectadas;
+            try
+            {
+                lineasAfectadas = command.ExecuteNonQuery();
+            }
+            catch (SqliteException ex) when (ex.SqliteExtendedErrorCode == 19)
+            {
+                lineasAfectadas = -1;
+            }
+
+            connection.Close();
+            return lineasAfectadas;
+        }
+    }
+
 }

@@ -41,5 +41,14 @@ public class PresupuestoController : ControllerBase
         var presupuestos = _presupuestoRepository.GetAll();
         return Ok(presupuestos);
     }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteById(int id)
+    {
+        int filasAfectadas = _presupuestoRepository.DeleteById(id);
+        if (filasAfectadas == -1) return Conflict("El producto ya fue agregado a uno o mas presupuestos, asegurese de borrar primero el/los presupuestos.");
+        if (filasAfectadas == 0) return NotFound($"No se encontró un producto con el ID {id}.");
+        return NoContent();
+    }
     
 }
